@@ -5,115 +5,414 @@
 <h1 align="center">Aereluna Note</h1>
 
 <p align="center">
-  A fully offline markdown notebook with a Frutiger Aero face.<br>
-  <sub>Three formatting buttons · golden-ratio split · dark by default · zero dependencies</sub>
+  <strong>A note to the future we were promised.</strong><br>
+  <em>An offline Markdown editor inspired by Frutiger Aero.</em>
 </p>
 
-Two ways to run it, both from the same `AerelunaNote.html`:
+<p align="center">
+  <strong>The future became intelligent.<br>
+  I just wanted it to feel beautiful again.</strong>
+</p>
 
-- **Browser** — download `AerelunaNote.html` and double-click it. No install, no dependencies, no build step.
-- **Desktop** — wrap it with Electron for a real macOS `.app` with native menus, real file I/O and direct PDF export.
+<p align="center">
+  Built by a human, accelerated by AI.
+</p>
 
-## Why
+---
 
-Most markdown editors grow until they have forty toolbar buttons and a plugin
-marketplace. This one has three formatting buttons and a single HTML file. It
-loads instantly, works on a plane, and the file you save is a plain `.md` that
-any other editor can open.
+# Why This Exists
 
-## What it does
+We already have incredible editors.
 
-- **Genuinely offline.** `AerelunaNote.html` contains no `<script src>`, no `@import`, no `fetch`. The markdown parser is hand-written (~200 lines) and every font is a system font. Pull the network cable and nothing changes. The desktop build additionally blocks all in-window navigation and hands real links to the system browser.
-- **Three formatting buttons.** Bold, italic, underline. Deliberately nothing else.
-- **Undo and redo** that cover toolbar edits as well as typing, with keystrokes coalesced into sensible steps.
-- **Golden-ratio split.** Editor and preview at 61.8 : 38.2, scroll-synced. Drag the divider to change it, double-click to snap back.
-- **Dark mode by default.** A sun/moon toggle in the toolbar switches back, and your choice is remembered. Exported PDFs stay light regardless of the screen theme.
-- **PDF export** of the full document — not the narrow preview column. Headings don't strand, code blocks and tables don't split across pages.
+They write with us.
+
+They sync across every device.
+
+They understand our language.
+
+Some can even finish our sentences.
+
+They're amazing.
+
+But every time I opened one, I felt like something had quietly disappeared.
+
+Not functionality.
+
+A feeling.
+
+Back in the early 2000s, people imagined the future differently.
+
+Transparent glass.
+
+Blue skies.
+
+Soft gradients.
+
+Rounded interfaces.
+
+Light floating through translucent windows.
+
+Technology didn't just promise convenience.
+
+It promised hope.
+
+It felt calm.
+
+It felt kind.
+
+It felt like tomorrow would always be a little brighter than today.
+
+Years later, people gave this aesthetic a name:
+
+**Frutiger Aero.**
+
+Somewhere along the way, the future became more efficient.
+
+It became more connected.
+
+It became more intelligent.
+
+But it also became colder.
+
+So I built the editor I wanted to open every morning.
+
+Not to compete with Obsidian.
+
+Not to replace Typora.
+
+Not to become another AI workspace.
+
+Just a quiet place to write.
+
+A place that reminds me of the future we once imagined.
+
+---
+
+# My Product Philosophy
+
+Modern software keeps growing.
+
+More plugins.
+
+More collaboration.
+
+More notifications.
+
+More dashboards.
+
+More AI.
+
+More everything.
+
+Aereluna Note deliberately moves in the opposite direction.
+
+One file.
+
+Three formatting buttons.
+
+No accounts.
+
+No cloud.
+
+No subscriptions.
+
+No distractions.
+
+Because writing isn't about having more tools.
+
+It's about having fewer things between your thoughts and the page.
+
+---
+
+# Features
+
+### 🌊 Frutiger Aero
+
+Inspired by one of the most optimistic design languages ever created.
+
+Glass.
+
+Gradients.
+
+Soft light.
+
+Gentle colors.
+
+A future that smiled instead of shouting.
+
+Writing should feel beautiful—not merely productive.
+
+---
+
+### 🔒 Fully Offline
+
+No internet connection required.
+
+No cloud.
+
+No telemetry.
+
+No tracking.
+
+No accounts.
+
+Everything stays on your computer.
+
+Supports:
+
+- Markdown (.md)
+- PDF export
+
+Your words belong to you.
+
+---
+
+### 💻 Runs Anywhere
+
+Built with Electron.
+
+Run it:
+
+- directly from a single HTML file
+- as a native macOS application
+- inside any modern browser
+
+Windows and Linux support are planned.
+
+---
+
+# Two Ways to Run
+
+Both versions use exactly the same `AerelunaNote.html`.
 
 ## Browser
 
-Download `AerelunaNote.html`. Double-click. Done.
+Download `AerelunaNote.html`.
 
-Chrome and Edge are the better fit: they support the File System Access API, so `⌘S` overwrites the file in place. Safari and Firefox fall back to downloading a copy.
+Double-click.
 
-`⌘P` exports a PDF — pick **PDF ▾ → Save as PDF** at the bottom left of the print sheet.
+Start writing.
 
-## Desktop app (macOS)
+No installation.
 
-Requires [Node.js](https://nodejs.org) 18 or newer.
+No dependencies.
+
+No build process.
+
+Chrome and Edge support true in-place saving through the File System Access API.
+
+Safari and Firefox simply download a new copy when saving.
+
+---
+
+## Desktop (Electron)
+
+Requires Node.js 18+
 
 ```bash
-git clone <your-repo-url>
+git clone <your-repository>
+
 cd aereluna-note
-npm install          # pulls Electron, ~200MB, once
-npm start            # run it
-npm run dist         # build dist/Aereluna Note-1.0.0-arm64.dmg
+
+npm install
+
+npm start
+
+npm run dist
 ```
 
-`npm run dist` builds for Apple Silicon and Intel separately. Use `npm run dist:universal` for a single universal binary.
+The desktop version adds:
 
-The build is **unsigned**. The first time you open it, macOS will refuse — right-click the app icon, choose Open, then confirm. Anyone downloading it from your releases page needs to do the same, so mention it in the release notes. With an Apple Developer account you can add `identity` and notarization settings under `build.mac` in `package.json` and skip all that.
-
-What the desktop build adds over the browser one:
-
-- Native menu bar (File, Edit, Format, View, Window)
-- Real Open / Save / Save As, with the filename and an edited dot in the title bar
-- PDF written straight to disk, no print dialog
-- A proper Save / Don't Save / Cancel sheet when closing with unsaved changes
-- Registers as a handler for `.md`, so Finder can open files into it
+- Native macOS menus
+- Open / Save / Save As
+- Native PDF export
+- Finder support for `.md`
 - Open Recent
+- Proper unsaved-change dialogs
 
-## Shortcuts
+---
+
+# What It Does
+
+- Fully offline
+- Live Markdown preview
+- Three formatting buttons
+- Undo & Redo
+- Golden Ratio split (61.8 : 38.2)
+- Scroll synchronization
+- Dark mode by default
+- PDF export
+- Automatic draft recovery
+
+Nothing more.
+
+Nothing less.
+
+---
+
+# Keyboard Shortcuts
 
 | Action | Shortcut |
-| --- | --- |
+|---------|----------|
 | Bold | `⌘B` |
 | Italic | `⌘I` |
 | Underline | `⌘U` |
 | Undo | `⌘Z` |
 | Redo | `⌘⇧Z` |
-| New | `⌘N` (desktop) |
+| New | `⌘N` |
 | Open | `⌘O` |
 | Save | `⌘S` |
-| Save As | `⌘⇧S` (desktop) |
+| Save As | `⌘⇧S` |
 | Export PDF | `⌘P` |
-| Toggle dark mode | `⌘⇧D` |
-| Reset split to 61.8% | `⌘0` |
+| Toggle Dark Mode | `⌘⇧D` |
+| Reset Split | `⌘0` |
 
-Formatting keys toggle: press once on selected text to apply, again to remove. With nothing selected the word under the caret is wrapped instead.
+---
 
-## About underline
+# Supported Markdown
 
-Standard markdown has no underline, so Aereluna Note writes inline HTML:
+Aereluna Note intentionally supports the Markdown features people actually use.
 
-```markdown
-<u>underlined</u>
+- Headings
+- Bold
+- Italic
+- Underline
+- Strikethrough
+- Links
+- Images
+- Inline code
+- Code blocks
+- Tables
+- Task lists
+- Nested lists
+- Blockquotes
+- Horizontal rules
+
+Files remain plain Markdown and work perfectly with GitHub, Typora, Obsidian, VS Code, and countless other editors.
+
+No proprietary format.
+
+No lock-in.
+
+---
+
+# Storage
+
+While you're writing, your document is quietly mirrored into `localStorage`.
+
+If you accidentally close the window, your draft will still be waiting.
+
+When you're ready, press `⌘S`.
+
+Your work is saved as a plain Markdown file.
+
+Simple.
+
+Future-proof.
+
+Yours.
+
+---
+
+# Built by a Human, Accelerated by AI
+
+Aereluna Note wouldn't exist without AI.
+
+Not because AI designed it.
+
+It didn't.
+
+The ideas.
+
+The atmosphere.
+
+The aesthetics.
+
+The tiny interactions.
+
+The philosophy.
+
+Those all came from a human.
+
+AI simply removed the distance between imagination and software.
+
+A few years ago, building a desktop application like this would have taken months.
+
+Today, one person can sit down with an idea, a conversation, and enough curiosity...
+
+…and slowly watch it become real.
+
+That's my favorite thing about AI.
+
+Not that it replaces creativity.
+
+But that it gives more people permission to create.
+
+---
+
+# Project Structure
+
+```
+AerelunaNote.html   Standalone editor
+main.js             Electron main process
+preload.js          Secure renderer bridge
+package.json        Electron configuration
+build/icon.png      Application icon
 ```
 
-That is still valid markdown — Typora, Obsidian, VS Code and GitHub all render it correctly. Your files are never locked to this editor.
+---
 
-## Supported syntax
+# Roadmap
 
-Headings, bold, italic, strikethrough, inline code, fenced code blocks, links, images, nested blockquotes, nested ordered and unordered lists, task lists (`- [ ]`), tables with column alignment, and horizontal rules.
+This project intentionally grows slowly.
 
-Everything is HTML-escaped first, then a small allowlist is put back: `u`, `b`, `i`, `em`, `strong`, `mark`, `small`, `sub`, `sup`, `kbd`, `br`, and `span` with a `color` style. Anything else — `<script>` included — renders as literal text. In the desktop build the renderer runs with `contextIsolation` on and `nodeIntegration` off; the only API it can reach is the five methods in `preload.js`.
+Things I'd love to explore:
 
-## Storage
+- Native Windows support
+- Native Linux support
+- Better typography
+- More Frutiger Aero themes
+- Better PDF layout
+- Optional local AI assistance (still offline-first)
 
-The document is mirrored into `localStorage` as you type and restored on next launch. That is a draft cache, not an archive — use `⌘S` for anything you care about.
+No cloud.
 
-Safari may disable `localStorage` under the `file://` protocol, in which case the autosave quietly does nothing. Editing is unaffected.
+No subscriptions.
 
-## Files
+No feature bloat.
 
-```
-AerelunaNote.html   the editor itself; works standalone
-main.js             Electron main process: window, menus, file I/O, PDF
-preload.js          the entire API surface the renderer can see
-package.json        dependencies and electron-builder config
-build/icon.png      app icon, 1024×1024, converted to .icns at build time
-```
+Just thoughtful improvements.
 
-## License
+---
+
+# Contributing
+
+If Aereluna Note reminds you of the future you imagined growing up...
+
+If Frutiger Aero still makes you smile...
+
+If software can be both useful and beautiful...
+
+You're welcome here.
+
+Pull requests, ideas, bug reports, and conversations are all appreciated.
+
+---
+
+# License
 
 MIT
+
+---
+
+<p align="center">
+
+### The future became intelligent.
+
+### I just wanted it to feel beautiful again.
+
+<br>
+
+**Rediscover the future we were promised.**
+
+</p>
