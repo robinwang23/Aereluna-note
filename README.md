@@ -17,6 +17,8 @@
 <p align="center">
   Built by a human, accelerated by AI.
 </p>
+<img width="1624" height="1061" alt="Xnip2026-07-27_21-59-36" src="https://github.com/user-attachments/assets/ee2392e1-aebf-4ee7-a061-f9ee35c83521" />
+<img width="1624" height="1061" alt="Xnip2026-07-27_21-58-55" src="https://github.com/user-attachments/assets/cf96c863-2536-48f0-919e-df5180ce0212" />
 
 ---
 
