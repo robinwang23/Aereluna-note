@@ -1,0 +1,51 @@
+{
+  "name": "aereluna-note",
+  "productName": "Aereluna Note",
+  "version": "1.0.0",
+  "description": "A fully offline markdown notebook with a Frutiger Aero face.",
+  "main": "main.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --mac",
+    "dist:universal": "electron-builder --mac --universal",
+    "pack": "electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "^32.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.aereluna.note",
+    "productName": "Aereluna Note",
+    "files": [
+      "main.js",
+      "preload.js",
+      "AerelunaNote.html"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.png",
+      "target": [
+        { "target": "dmg", "arch": ["arm64", "x64"] },
+        { "target": "zip", "arch": ["arm64", "x64"] }
+      ],
+      "darkModeSupport": false
+    },
+    "fileAssociations": [
+      {
+        "ext": ["md", "markdown", "mdown"],
+        "name": "Markdown Document",
+        "role": "Editor"
+      }
+    ],
+    "dmg": {
+      "title": "Aereluna Note ${version}"
+    }
+  }
+}

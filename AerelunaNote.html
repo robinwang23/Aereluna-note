@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aereluna Note — Untitled.md</title>
+<style>
+/* ==========================================================================
+   Aereluna Note · a Frutiger Aero markdown notebook
+   Fully offline. No remote fonts, scripts or stylesheets. Ever.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- tokens */
+:root{
+  --ui-font:"Lucida Grande","Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+  --mono-font:Monaco,Menlo,Consolas,"Courier New",monospace;
+
+  /* backdrop */
+  --sky-1:#b6e6ff; --sky-2:#74c8f6; --sky-3:#3d9ee2; --sky-4:#1d6cb4; --sky-5:#0f4a84;
+  --aurora-a:rgba(150,255,215,.62);
+  --aurora-b:rgba(120,230,175,.55);
+
+  /* frame + chrome */
+  --frame:#2a6a9c;
+  --frame-soft:#8fb7d6;
+  --rim-hi:rgba(255,255,255,.95);
+  --rim-lo:rgba(6,42,74,.30);
+  --shell:rgba(236,246,254,.94);
+
+  --chrome-1:#ffffff; --chrome-2:#e3f1fc; --chrome-3:#c6e0f6; --chrome-4:#e7f4ff;
+  --pinstripe:rgba(255,255,255,.45);
+
+  /* recessed groups */
+  --well-1:rgba(150,190,220,.34);
+  --well-2:rgba(205,230,248,.55);
+  --well-edge:rgba(60,120,170,.42);
+
+  /* buttons */
+  --btn-1:#ffffff; --btn-2:#f1f8ff; --btn-3:#d3e8fa; --btn-4:#eaf6ff;
+  --btn-edge:#6f9dc0; --btn-ink:#123a56;
+  --btn-glow:rgba(96,196,255,.9);
+
+  /* surfaces */
+  --paper-1:rgba(255,255,255,.985); --paper-2:rgba(243,251,255,.985);
+  --paper-edge:#8db6d6;
+  --ink:#10222f; --ink-soft:#4a7a9c; --ink-head:#0f4a76;
+
+  /* markdown accents */
+  --md-rule:#9fd0ef; --md-code-1:#f4faff; --md-code-2:#e4f1fb; --md-code-edge:#b4d6ec;
+  --md-quote:#59b0e6; --md-quote-bg-1:rgba(226,243,255,.92); --md-quote-bg-2:rgba(203,233,252,.8);
+  --md-link:#0a5fa6;
+  --md-th-1:#f6fcff; --md-th-2:#daedfb; --md-th-3:#c9e3f7; --md-th-4:#e8f5ff;
+  --md-cell-edge:#d2e7f6; --md-zebra:rgba(240,249,255,.72);
+
+  --shadow-deep:rgba(4,30,58,.48);
+}
+
+body.dark{
+  /* Every token below is the light value re-derived, not a fresh palette:
+     the sky keeps its top-to-bottom direction but inverts luminance, chrome
+     and buttons keep their four-stop gloss so the bevels still read, and the
+     paper/ink pair is swapped rather than merely dimmed. */
+
+  /* backdrop — same blue-to-teal journey, after dusk */
+  --sky-1:#2a5f80; --sky-2:#1d4869; --sky-3:#133450; --sky-4:#0c2138; --sky-5:#071423;
+  --aurora-a:rgba(96,232,196,.30);
+  --aurora-b:rgba(74,168,228,.28);
+
+  /* frame + chrome */
+  --frame:#061523;
+  --frame-soft:#39708f;
+  --rim-hi:rgba(168,228,255,.34);
+  --rim-lo:rgba(0,0,0,.62);
+  --shell:rgba(20,45,65,.94);
+
+  /* kept deliberately light-ish: the gloss and pinstripes need luminance */
+  --chrome-1:#5089ad; --chrome-2:#376f93; --chrome-3:#234f6f; --chrome-4:#33688a;
+  --pinstripe:rgba(255,255,255,.13);
+
+  /* recessed groups read as shadow instead of tint */
+  --well-1:rgba(0,0,0,.42);
+  --well-2:rgba(120,180,220,.10);
+  --well-edge:rgba(0,0,0,.58);
+
+  /* buttons keep the 46%/50% gloss split, one stop darker than the chrome */
+  --btn-1:#63a0c4; --btn-2:#427a9d; --btn-3:#2b5c7c; --btn-4:#3f7b9e;
+  --btn-edge:#0b2a42; --btn-ink:#eaf7ff;
+  --btn-glow:rgba(110,225,255,.85);
+
+  /* paper and ink swap places */
+  --paper-1:rgba(21,45,64,.985); --paper-2:rgba(16,35,52,.985);
+  --paper-edge:#10334c;
+  --ink:#dcebf6; --ink-soft:#93bed6; --ink-head:#8ad6ff;
+
+  /* markdown accents */
+  --md-rule:#33769c;
+  --md-code-1:#122c40; --md-code-2:#0d2234; --md-code-edge:#245571;
+  --md-quote:#4bb0e2; --md-quote-bg-1:rgba(24,58,82,.90); --md-quote-bg-2:rgba(17,43,63,.80);
+  --md-link:#78d0f7;
+  --md-th-1:#3a7396; --md-th-2:#28587a; --md-th-3:#1e4763; --md-th-4:#2e6083;
+  --md-cell-edge:#244f6c; --md-zebra:rgba(255,255,255,.045);
+
+  --shadow-deep:rgba(0,0,0,.70);
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;}
+body{
+  font-family:var(--ui-font);
+  font-size:13px;
+  color:var(--ink);
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse 68% 44% at 20% -6%,  rgba(255,255,255,.92), rgba(255,255,255,0) 62%),
+    radial-gradient(ellipse 52% 38% at 88% 10%,  var(--aurora-a), rgba(0,0,0,0) 62%),
+    radial-gradient(ellipse 96% 58% at 48% 110%, var(--aurora-b), rgba(0,0,0,0) 64%),
+    linear-gradient(177deg,var(--sky-1) 0%,var(--sky-2) 24%,var(--sky-3) 52%,var(--sky-4) 80%,var(--sky-5) 100%);
+  background-attachment:fixed;
+  transition:color .25s;
+}
+body.dark{
+  /* a faint starfield only makes sense at night */
+  background:
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255,255,255,.75), transparent 60%),
+    radial-gradient(1.5px 1.5px at 78% 12%, rgba(255,255,255,.55), transparent 60%),
+    radial-gradient(1px 1px   at 46% 32%, rgba(255,255,255,.6),  transparent 60%),
+    radial-gradient(1px 1px   at 88% 46%, rgba(255,255,255,.45), transparent 60%),
+    radial-gradient(1.5px 1.5px at 28% 62%, rgba(255,255,255,.4), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 18% -8%, rgba(120,200,255,.16), rgba(0,0,0,0) 62%),
+    radial-gradient(ellipse 52% 38% at 86% 12%, var(--aurora-a), rgba(0,0,0,0) 62%),
+    radial-gradient(ellipse 96% 58% at 48% 112%, var(--aurora-b), rgba(0,0,0,0) 64%),
+    linear-gradient(177deg,var(--sky-1) 0%,var(--sky-2) 24%,var(--sky-3) 52%,var(--sky-4) 80%,var(--sky-5) 100%);
+  background-attachment:fixed;
+}
+
+/* ----------------------------------------------------------- bubbles */
+#bubbles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bub{
+  position:absolute;border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,.98) 0%, rgba(255,255,255,.40) 16%, rgba(255,255,255,.07) 40%, rgba(255,255,255,0) 58%),
+    radial-gradient(circle at 70% 76%, rgba(185,255,240,.40), rgba(255,255,255,0) 54%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%);
+  border:1px solid rgba(255,255,255,.48);
+  box-shadow:0 0 26px rgba(255,255,255,.38), inset 0 0 30px rgba(255,255,255,.26);
+  animation:rise linear infinite;
+}
+body.dark .bub{
+  border-color:rgba(150,230,255,.28);
+  box-shadow:0 0 26px rgba(90,200,255,.22), inset 0 0 30px rgba(120,220,255,.14);
+  opacity:.4;
+}
+@keyframes rise{
+  0%  {transform:translateY(22vh) translateX(0)    scale(.82);opacity:0;}
+  12% {opacity:.62;}
+  86% {opacity:.42;}
+  100%{transform:translateY(-118vh) translateX(42px) scale(1.14);opacity:0;}
+}
+
+/* ------------------------------------------------------- window shell */
+#shell{position:relative;z-index:1;height:100%;padding:15px 17px 17px;display:flex;flex-direction:column;}
+
+#window{
+  position:relative;                 /* anchors the glass sheet below */
+  flex:1;min-height:0;display:flex;flex-direction:column;
+  border-radius:13px;
+  background:var(--shell);
+  border:1px solid var(--frame);
+  box-shadow:
+    inset 0 1px 0 var(--rim-hi),
+    inset 0 0 0 1px rgba(255,255,255,.42),
+    inset 0 -1px 0 var(--rim-lo),
+    0 26px 54px var(--shadow-deep),
+    0 3px 10px var(--shadow-deep);
+  overflow:hidden;
+}
+body.dark #window{box-shadow:
+    inset 0 1px 0 var(--rim-hi),
+    inset 0 0 0 1px rgba(120,200,255,.10),
+    inset 0 -1px 0 var(--rim-lo),
+    0 26px 54px var(--shadow-deep),
+    0 3px 10px var(--shadow-deep);}
+
+/* A sheet of glass over the chrome. It stops at the toolbar's lower edge so it
+   never washes over the editor or the preview — those need honest contrast. */
+#window::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:92px;pointer-events:none;z-index:3;
+  background:linear-gradient(180deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,.10) 62%,rgba(255,255,255,0) 100%);
+  border-radius:13px 13px 60% 60% / 13px 13px 22px 22px;
+}
+body.dark #window::before{background:linear-gradient(180deg,rgba(190,235,255,.13) 0%,rgba(190,235,255,.04) 48%,rgba(255,255,255,0) 100%);}
+
+/* --------------------------------------------------------- title bar */
+#titlebar{
+  position:relative;z-index:4;
+  flex:0 0 auto;height:38px;display:flex;align-items:center;gap:9px;padding:0 13px;
+  background:
+    repeating-linear-gradient(180deg, var(--pinstripe) 0 1px, rgba(0,0,0,.022) 1px 2px),
+    linear-gradient(180deg,var(--chrome-1) 0%,var(--chrome-2) 47%,var(--chrome-3) 50%,var(--chrome-4) 100%);
+  border-bottom:1px solid var(--frame-soft);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(255,255,255,.55), 0 1px 0 rgba(0,0,0,.05);
+  user-select:none;
+}
+/* Equal-width flanks so the document title lands dead centre. */
+.tb-side{flex:1 1 0;display:flex;align-items:center;min-width:0;}
+.tb-right{justify-content:flex-end;}
+
+#doctitle{
+  flex:0 1 auto;text-align:center;padding:0 10px;font-size:12.5px;font-weight:700;letter-spacing:.2px;
+  color:var(--ink-head);text-shadow:0 1px 0 rgba(255,255,255,.92);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+body.dark #doctitle{text-shadow:0 1px 2px rgba(0,0,0,.6);}
+#logo{
+  font-size:12.5px;font-weight:700;letter-spacing:.5px;
+  background:linear-gradient(180deg,#3d95d8,#124f7f);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+body.dark #logo{background:linear-gradient(180deg,#9fe4ff,#4aa2cf);-webkit-background-clip:text;background-clip:text;}
+
+/* ----------------------------------------------------------- toolbar */
+#toolbar{
+  position:relative;z-index:4;
+  flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:9px 12px;flex-wrap:wrap;
+  background:
+    repeating-linear-gradient(180deg, var(--pinstripe) 0 1px, rgba(0,0,0,.018) 1px 2px),
+    linear-gradient(180deg,var(--chrome-1) 0%,var(--chrome-2) 45%,var(--chrome-3) 49%,var(--chrome-4) 100%);
+  border-bottom:1px solid var(--frame-soft);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95), 0 2px 5px rgba(20,70,120,.16);
+}
+
+/* recessed group well — very 2000s toolbar */
+.group{
+  display:flex;align-items:center;gap:5px;padding:4px 6px;border-radius:11px;
+  background:linear-gradient(180deg,var(--well-1),var(--well-2));
+  box-shadow:inset 0 1px 3px rgba(10,50,90,.30), inset 0 -1px 0 rgba(255,255,255,.65), 0 1px 0 rgba(255,255,255,.7);
+  border:1px solid var(--well-edge);
+}
+body.dark .group{box-shadow:inset 0 2px 5px rgba(0,0,0,.6), inset 0 -1px 0 rgba(255,255,255,.06), 0 1px 0 rgba(255,255,255,.05);}
+.spacer{flex:1;}
+
+.btn{
+  position:relative;
+  font-family:var(--ui-font);font-size:12px;line-height:1;color:var(--btn-ink);
+  padding:0 12px;height:28px;display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  border:1px solid var(--btn-edge);border-radius:9px;
+  background:linear-gradient(180deg,var(--btn-1) 0%,var(--btn-2) 46%,var(--btn-3) 50%,var(--btn-4) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.98),
+    inset 0 0 0 1px rgba(255,255,255,.55),
+    inset 0 -2px 3px rgba(20,70,120,.16),
+    0 1px 2px rgba(12,55,95,.34);
+  text-shadow:0 1px 0 rgba(255,255,255,.9);
+  cursor:pointer;
+  transition:box-shadow .13s, filter .13s, transform .05s;
+}
+body.dark .btn{
+  box-shadow:
+    inset 0 1px 0 rgba(190,240,255,.30),
+    inset 0 0 0 1px rgba(150,220,255,.10),
+    inset 0 -2px 4px rgba(0,0,0,.45),
+    0 1px 2px rgba(0,0,0,.55);
+  text-shadow:0 -1px 0 rgba(0,0,0,.55);
+}
+/* the glossy upper cap */
+.btn::after{
+  content:"";position:absolute;left:2px;right:2px;top:1px;height:44%;
+  border-radius:7px 7px 40% 40% / 7px 7px 12px 12px;
+  background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.16));
+  pointer-events:none;
+}
+body.dark .btn::after{background:linear-gradient(180deg,rgba(200,245,255,.28),rgba(200,245,255,.03));}
+
+.btn:hover{filter:brightness(1.05);box-shadow:
+  inset 0 1px 0 rgba(255,255,255,.98),
+  inset 0 0 0 1px rgba(255,255,255,.6),
+  inset 0 -2px 3px rgba(20,70,120,.14),
+  0 0 10px var(--btn-glow), 0 1px 2px rgba(12,55,95,.34);}
+.btn:active{transform:translateY(1px);filter:brightness(.93);
+  box-shadow:inset 0 3px 6px rgba(10,50,95,.45), 0 0 6px var(--btn-glow);}
+.btn:disabled{opacity:.42;cursor:default;filter:grayscale(.5);box-shadow:
+  inset 0 1px 0 rgba(255,255,255,.7), 0 1px 1px rgba(12,55,95,.2);}
+.btn:disabled:hover{filter:grayscale(.5);}
+
+.btn.on{
+  color:#fff;text-shadow:0 -1px 0 rgba(0,45,85,.6);
+  border-color:#0f558e;
+  background:linear-gradient(180deg,#9ad6f8 0%,#54ade9 46%,#2b86cf 50%,#6ebbec 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.75),
+    inset 0 0 0 1px rgba(255,255,255,.28),
+    inset 0 -2px 4px rgba(8,45,85,.45),
+    0 0 11px rgba(70,180,255,.9), 0 1px 2px rgba(12,55,95,.4);
+}
+body.dark .btn.on{
+  border-color:#0b3a5c;
+  background:linear-gradient(180deg,#59c8f0 0%,#2b9ad2 46%,#1876ab 50%,#3aa8d9 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4), inset 0 -2px 4px rgba(0,0,0,.5), 0 0 12px rgba(70,210,255,.7);
+}
+
+.btn.fmt{min-width:36px;font-size:15px;padding:0 11px;}
+.btn.fmt b{font-weight:800;font-family:Georgia,"Times New Roman",serif;}
+.btn.fmt i{font-style:italic;font-family:Georgia,"Times New Roman",serif;}
+.btn.fmt u{text-decoration:underline;font-family:Georgia,"Times New Roman",serif;}
+.btn.icon{min-width:34px;padding:0 9px;}
+.btn.icon svg{width:15px;height:15px;display:block;}
+.btn.arrow{min-width:34px;padding:0 9px;font-size:15px;}
+
+/* sun / moon */
+#btnTheme .ico-sun{display:none;}
+#btnTheme .ico-moon{display:block;}
+body.dark #btnTheme .ico-sun{display:block;}
+body.dark #btnTheme .ico-moon{display:none;}
+
+/* -------------------------------------------------------------- panes */
+#panes{position:relative;z-index:2;flex:1;min-height:0;display:flex;
+  background:linear-gradient(180deg,rgba(190,218,238,.85),rgba(160,198,226,.85));}
+body.dark #panes{background:linear-gradient(180deg,rgba(9,26,40,.9),rgba(5,18,30,.9));}
+
+#editorPane{flex:0 0 61.8%;min-width:15%;display:flex;flex-direction:column;padding:10px 4px 10px 10px;}
+#previewPane{flex:1 1 38.2%;min-width:12%;display:flex;flex-direction:column;padding:10px 10px 10px 4px;}
+
+.panehead{
+  flex:0 0 auto;height:23px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 9px;font-size:10px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;
+  color:var(--ink-head);text-shadow:0 1px 0 rgba(255,255,255,.9);
+  background:
+    repeating-linear-gradient(180deg, var(--pinstripe) 0 1px, rgba(0,0,0,.02) 1px 2px),
+    linear-gradient(180deg,var(--chrome-1),var(--chrome-2) 48%,var(--chrome-3) 51%,var(--chrome-4));
+  border:1px solid var(--paper-edge);border-bottom:none;border-radius:9px 9px 0 0;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95);
+  user-select:none;
+}
+body.dark .panehead{text-shadow:0 1px 2px rgba(0,0,0,.7);}
+
+#editor,#preview{
+  flex:1;min-height:0;
+  border:1px solid var(--paper-edge);border-radius:0 0 9px 9px;
+  background:linear-gradient(180deg,var(--paper-1),var(--paper-2));
+  box-shadow:inset 0 3px 8px rgba(30,90,145,.20), inset 0 0 0 1px rgba(255,255,255,.5), 0 1px 0 rgba(255,255,255,.6);
+}
+body.dark #editor,body.dark #preview{
+  box-shadow:inset 0 3px 10px rgba(0,0,0,.65), inset 0 0 0 1px rgba(140,215,255,.07), 0 1px 0 rgba(255,255,255,.05);
+}
+#editor{
+  width:100%;resize:none;outline:none;
+  font-family:var(--mono-font);font-size:13.5px;line-height:1.74;color:var(--ink);
+  padding:15px 17px;tab-size:4;
+}
+#editor::selection{background:#9fd4f6;color:#06212f;}
+body.dark #editor::selection{background:#1d6f9c;color:#eafaff;}
+#preview{overflow:auto;padding:17px 19px;font-size:13px;line-height:1.7;
+  word-wrap:break-word;overflow-wrap:break-word;}
+
+/* Aqua scrollbars */
+#preview::-webkit-scrollbar,#editor::-webkit-scrollbar{width:15px;}
+#preview::-webkit-scrollbar-track,#editor::-webkit-scrollbar-track{
+  background:linear-gradient(90deg,rgba(190,215,235,.55),rgba(232,244,253,.55));
+  border-left:1px solid rgba(140,180,210,.6);}
+body.dark #preview::-webkit-scrollbar-track,body.dark #editor::-webkit-scrollbar-track{
+  background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(255,255,255,.03));border-left:1px solid rgba(0,0,0,.5);}
+#preview::-webkit-scrollbar-thumb,#editor::-webkit-scrollbar-thumb{
+  border-radius:9px;border:1px solid #5d8fb5;margin:2px;
+  background:linear-gradient(180deg,#ffffff,#e0f1fd 46%,#b6dbf6 50%,#e6f5ff);
+  box-shadow:inset 0 1px 0 #fff, inset 0 -1px 2px rgba(20,70,120,.25);}
+body.dark #preview::-webkit-scrollbar-thumb,body.dark #editor::-webkit-scrollbar-thumb{
+  border-color:#0a2438;
+  background:linear-gradient(180deg,#4b83a8,#2c5c78 46%,#1a4159 50%,#33667f);
+  box-shadow:inset 0 1px 0 rgba(190,240,255,.25), inset 0 -1px 2px rgba(0,0,0,.5);}
+
+/* --------------------------------------------------------- splitter */
+#splitter{
+  flex:0 0 9px;cursor:col-resize;align-self:stretch;margin:10px 0;position:relative;border-radius:5px;
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.72),rgba(255,255,255,0));
+}
+body.dark #splitter{background:linear-gradient(90deg,rgba(120,210,255,0),rgba(120,210,255,.24),rgba(120,210,255,0));}
+#splitter::after{
+  content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:5px;height:52px;border-radius:3px;border:1px solid rgba(90,145,185,.75);
+  background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(180,218,244,.95));
+  box-shadow:0 0 7px rgba(255,255,255,.9), inset 0 1px 0 #fff, 0 1px 2px rgba(15,60,105,.4);
+}
+body.dark #splitter::after{
+  border-color:rgba(10,40,60,.9);
+  background:linear-gradient(180deg,rgba(110,190,225,.85),rgba(40,95,130,.9));
+  box-shadow:0 0 9px rgba(90,200,255,.45), inset 0 1px 0 rgba(200,245,255,.4);
+}
+#splitter:hover{background:linear-gradient(90deg,rgba(255,255,255,0),rgba(200,240,255,.95),rgba(255,255,255,0));}
+
+/* ------------------------------------------------------- status bar */
+#status{
+  position:relative;z-index:4;
+  flex:0 0 auto;height:26px;display:flex;align-items:center;gap:16px;padding:0 13px;
+  font-size:11px;color:var(--ink-soft);text-shadow:0 1px 0 rgba(255,255,255,.85);
+  background:
+    repeating-linear-gradient(180deg, var(--pinstripe) 0 1px, rgba(0,0,0,.02) 1px 2px),
+    linear-gradient(180deg,var(--chrome-1),var(--chrome-2) 48%,var(--chrome-3) 51%,var(--chrome-4));
+  border-top:1px solid var(--frame-soft);box-shadow:inset 0 1px 0 rgba(255,255,255,.95);
+  user-select:none;
+}
+body.dark #status{text-shadow:0 1px 2px rgba(0,0,0,.6);}
+#saveState{margin-left:auto;}
+.dot-live{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;
+  background:radial-gradient(circle at 32% 28%,#d6ffbc,#3d9c2c 70%);
+  box-shadow:0 0 6px rgba(95,225,95,.95), inset 0 -1px 1px rgba(0,60,0,.3);}
+
+/* ==================================================== rendered markdown */
+.md h1,.md h2,.md h3,.md h4,.md h5,.md h6{
+  font-family:var(--ui-font);color:var(--ink-head);margin:1.15em 0 .5em;line-height:1.3;
+  text-shadow:0 1px 0 rgba(255,255,255,.9);
+}
+body.dark .md h1,body.dark .md h2,body.dark .md h3,
+body.dark .md h4,body.dark .md h5,body.dark .md h6{text-shadow:0 1px 3px rgba(0,0,0,.6);}
+.md h1{font-size:1.78em;border-bottom:2px solid var(--md-rule);padding-bottom:.24em;}
+.md h2{font-size:1.44em;border-bottom:1px solid var(--md-rule);padding-bottom:.2em;}
+.md h3{font-size:1.2em;} .md h4{font-size:1.06em;}
+.md h5,.md h6{font-size:1em;color:var(--ink-soft);}
+.md > *:first-child{margin-top:0;}
+.md p{margin:.66em 0;}
+.md a{color:var(--md-link);text-decoration:underline;}
+.md code{font-family:var(--mono-font);font-size:.9em;padding:1px 5px;border-radius:5px;
+  background:linear-gradient(180deg,var(--md-code-1),var(--md-code-2));
+  border:1px solid var(--md-code-edge);color:var(--ink-head);}
+.md pre{margin:.9em 0;padding:12px 14px;overflow:auto;border-radius:10px;
+  background:linear-gradient(180deg,var(--md-code-1),var(--md-code-2));
+  border:1px solid var(--md-code-edge);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8), inset 0 2px 6px rgba(40,100,150,.14);}
+body.dark .md pre{box-shadow:inset 0 1px 0 rgba(150,220,255,.08), inset 0 2px 8px rgba(0,0,0,.55);}
+.md pre code{background:none;border:none;padding:0;font-size:.88em;color:var(--ink);}
+.md blockquote{margin:.9em 0;padding:.55em .95em;border-left:4px solid var(--md-quote);
+  border-radius:0 9px 9px 0;color:var(--ink-soft);
+  background:linear-gradient(180deg,var(--md-quote-bg-1),var(--md-quote-bg-2));}
+.md blockquote > *:first-child{margin-top:0;} .md blockquote > *:last-child{margin-bottom:0;}
+.md ul,.md ol{margin:.62em 0;padding-left:1.65em;}
+.md li{margin:.24em 0;}
+.md li input[type=checkbox]{margin-right:.45em;}
+.md hr{border:none;height:2px;margin:1.35em 0;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--md-rule),transparent);}
+.md table{border-collapse:separate;border-spacing:0;margin:.9em 0;width:100%;
+  border:1px solid var(--md-code-edge);border-radius:9px;overflow:hidden;
+  box-shadow:0 1px 3px rgba(25,85,135,.18);}
+.md th{background:linear-gradient(180deg,var(--md-th-1),var(--md-th-2) 48%,var(--md-th-3) 51%,var(--md-th-4));
+  color:var(--ink-head);font-weight:700;text-shadow:0 1px 0 rgba(255,255,255,.9);}
+body.dark .md th{text-shadow:0 1px 2px rgba(0,0,0,.6);}
+.md th,.md td{padding:6px 11px;border-bottom:1px solid var(--md-cell-edge);border-right:1px solid var(--md-cell-edge);}
+.md tr:last-child td{border-bottom:none;} .md th:last-child,.md td:last-child{border-right:none;}
+.md tr:nth-child(even) td{background:var(--md-zebra);}
+.md img{max-width:100%;border-radius:9px;box-shadow:0 2px 9px rgba(18,65,110,.32);}
+.md del{color:var(--ink-soft);}
+
+/* ============================================================ printing */
+#printArea{display:none;}
+@media print{
+  @page{margin:18mm 16mm;}
+  html,body{height:auto;overflow:visible;background:#fff !important;}
+  #bubbles,#shell{display:none !important;}
+  /* printed output is always light, whatever the screen theme is */
+  #printArea{display:block;font-family:var(--ui-font);font-size:11.5pt;line-height:1.65;
+    color:#000 !important;background:#fff !important;}
+  #printArea h1,#printArea h2,#printArea h3,
+  #printArea h4,#printArea h5,#printArea h6{color:#000 !important;text-shadow:none !important;}
+  #printArea h1{border-bottom:1.5pt solid #444 !important;}
+  #printArea h2{border-bottom:.5pt solid #888 !important;}
+  #printArea p,#printArea li,#printArea td{color:#000 !important;}
+  #printArea pre{background:#f4f4f4 !important;border:.5pt solid #bbb !important;box-shadow:none !important;}
+  #printArea code{background:#f4f4f4 !important;border:.5pt solid #ccc !important;color:#000 !important;}
+  #printArea blockquote{background:#f7f7f7 !important;border-left:3pt solid #666 !important;color:#222 !important;}
+  #printArea th{background:#eee !important;color:#000 !important;text-shadow:none !important;}
+  #printArea th,#printArea td{border:.5pt solid #999 !important;}
+  #printArea table{border:.5pt solid #999 !important;}
+  #printArea hr{background:#999 !important;}
+  #printArea a{color:#000 !important;}
+  #printArea h1,#printArea h2,#printArea h3{break-after:avoid;page-break-after:avoid;}
+  #printArea pre,#printArea table,#printArea blockquote{break-inside:avoid;page-break-inside:avoid;}
+}
+
+/* ====================================================== desktop shell */
+body.in-app #shell{padding:0;}
+body.in-app #window{border-radius:0;border:none;}
+body.in-app #window::before{border-radius:0 0 60% 60% / 0 0 26px 26px;}
+body.in-app #titlebar{height:38px;padding-left:84px;-webkit-app-region:drag;}
+body.in-app #logo,body.in-app #doctitle{-webkit-app-region:no-drag;}
+</style>
+</head>
+<body>
+
+<div id="bubbles"></div>
+
+<div id="shell">
+  <div id="window">
+
+    <div id="titlebar">
+      <div class="tb-side"></div>
+      <div id="doctitle">Untitled.md</div>
+      <div class="tb-side tb-right"><span id="logo">Aereluna Note</span></div>
+    </div>
+
+    <div id="toolbar">
+      <div class="group">
+        <button class="btn fmt" id="btnBold"      title="Bold (⌘B)"><b>B</b></button>
+        <button class="btn fmt" id="btnItalic"    title="Italic (⌘I)"><i>I</i></button>
+        <button class="btn fmt" id="btnUnderline" title="Underline (⌘U)"><u>U</u></button>
+      </div>
+
+      <div class="group">
+        <button class="btn arrow" id="btnUndo" title="Undo (⌘Z)" disabled>&#8630;</button>
+        <button class="btn arrow" id="btnRedo" title="Redo (⌘⇧Z)" disabled>&#8631;</button>
+      </div>
+
+      <div class="group">
+        <button class="btn" id="btnOpen" title="Open a .md file (⌘O)">Open</button>
+        <button class="btn" id="btnSave" title="Save as .md (⌘S)">Save</button>
+        <button class="btn" id="btnPdf"  title="Export PDF (⌘P)">Export PDF</button>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="group">
+        <button class="btn icon" id="btnTheme" title="Toggle dark mode (⌘⇧D)">
+          <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z"/>
+          </svg>
+          <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.1"/>
+            <path d="M12 1.8v2.6M12 19.6v2.6M4.6 4.6l1.9 1.9M17.5 17.5l1.9 1.9M1.8 12h2.6M19.6 12h2.6M4.6 19.4l1.9-1.9M17.5 6.5l1.9-1.9"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="panes">
+      <div id="editorPane">
+        <div class="panehead"><span>Editor</span></div>
+        <textarea id="editor" spellcheck="false" placeholder="Write markdown here…"></textarea>
+      </div>
+      <div id="splitter" title="Drag to resize · double-click for 61.8%"></div>
+      <div id="previewPane">
+        <div class="panehead"><span>Preview</span></div>
+        <div id="preview" class="md"></div>
+      </div>
+    </div>
+
+    <div id="status">
+      <span><span class="dot-live"></span>Offline · nothing leaves this machine</span>
+      <span id="counts">0 words · 0 lines</span>
+      <span id="saveState">Ready</span>
+    </div>
+
+  </div>
+</div>
+
+<div id="printArea" class="md"></div>
+
+<script>
+"use strict";
+
+/* ==========================================================================
+   1 · Markdown → HTML  (self-contained, zero dependencies)
+   ========================================================================== */
+
+function escapeHtml(s){
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+/* Everything is escaped first; then a small allowlist is put back. That is what
+   lets <u> render while <script> stays inert text. */
+var ALLOWED_TAGS = /&lt;(\/?)(u|b|i|em|strong|mark|small|sub|sup|kbd|br)(\s*\/?)&gt;/gi;
+var ALLOWED_SPAN = /&lt;span\s+style="color:\s*(#[0-9a-fA-F]{3,8}|rgba?\([\d\s.,%]+\)|[a-zA-Z]{3,20})"\s*&gt;/gi;
+
+function unescapeAllowed(s){
+  s = s.replace(ALLOWED_TAGS, "<$1$2$3>");
+  s = s.replace(ALLOWED_SPAN, function(_,c){ return '<span style="color:' + c + '">'; });
+  s = s.replace(/&lt;\/span&gt;/gi, "</span>");
+  return s;
+}
+
+function inline(text){
+  var codes = [];
+  /* U+E000 is a private-use codepoint: it cannot appear in real prose, so it is a
+     safe stand-in for code spans while the remaining inline rules run. */
+  text = text.replace(/`([^`]+)`/g, function(_,c){ codes.push(c); return "C"+(codes.length-1)+""; });
+
+  text = escapeHtml(text);
+  text = unescapeAllowed(text);
+
+  text = text.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g,
+    function(_,alt,url,t){ return '<img src="'+url+'" alt="'+alt+'"'+(t?' title="'+t+'"':'')+'>'; });
+
+  text = text.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g,
+    function(_,label,url,t){ return '<a href="'+url+'"'+(t?' title="'+t+'"':'')+'>'+label+'</a>'; });
+
+  text = text.replace(/\*\*\*([^*]+)\*\*\*/g, "<strong><em>$1</em></strong>");
+  text = text.replace(/\*\*([^*]+)\*\*/g,     "<strong>$1</strong>");
+  text = text.replace(/\*([^*\n]+)\*/g,       "<em>$1</em>");
+  text = text.replace(/___([^_]+)___/g,       "<strong><em>$1</em></strong>");
+  text = text.replace(/__([^_]+)__/g,         "<strong>$1</strong>");
+  text = text.replace(/~~([^~]+)~~/g,         "<del>$1</del>");
+
+  text = text.replace(/C(\d+)/g, function(_,i){ return "<code>"+escapeHtml(codes[+i])+"</code>"; });
+  return text;
+}
+
+function renderList(items, pos, indent){
+  var ordered = items[pos].ordered;
+  var html = ordered ? "<ol>" : "<ul>";
+  while(pos < items.length && items[pos].indent >= indent){
+    if(items[pos].indent > indent){
+      var r = renderList(items, pos, items[pos].indent);
+      if(/<\/li>$/.test(html)) html = html.replace(/<\/li>$/, r[0] + "</li>");
+      else                     html += "<li>" + r[0] + "</li>";
+      pos = r[1];
+      continue;
+    }
+    if(items[pos].ordered !== ordered) break;
+    var it = items[pos], body = inline(it.text);
+    if(it.task !== null) body = '<input type="checkbox" disabled' + (it.task ? " checked" : "") + ">" + body;
+    html += "<li>" + body + "</li>";
+    pos++;
+  }
+  return [html + (ordered ? "</ol>" : "</ul>"), pos];
+}
+
+var RE_UL   = /^(\s*)([-*+])\s+(.*)$/;
+var RE_OL   = /^(\s*)(\d+)[.)]\s+(.*)$/;
+var RE_TASK = /^\[([ xX])\]\s+(.*)$/;
+
+function isBlockStart(l){
+  return /^\s*```/.test(l) || /^\s{0,3}#{1,6}\s/.test(l) || /^\s*>/.test(l) ||
+         RE_UL.test(l) || RE_OL.test(l) || /^\s{0,3}(-{3,}|\*{3,}|_{3,})\s*$/.test(l);
+}
+
+function mdToHtml(src){
+  var lines = String(src).replace(/\r\n?/g, "\n").split("\n");
+  var out = [], i = 0, m;
+
+  while(i < lines.length){
+    var line = lines[i];
+    if(!line.trim()){ i++; continue; }
+
+    /* fenced code */
+    m = line.match(/^\s*```(\S*)\s*$/);
+    if(m){
+      var lang = m[1], buf = [];
+      i++;
+      while(i < lines.length && !/^\s*```\s*$/.test(lines[i])){ buf.push(lines[i]); i++; }
+      i++;
+      out.push('<pre><code'+(lang?' class="language-'+escapeHtml(lang)+'"':'')+'>'
+               + escapeHtml(buf.join("\n")) + "</code></pre>");
+      continue;
+    }
+
+    /* rule */
+    if(/^\s{0,3}(-{3,}|\*{3,}|_{3,})\s*$/.test(line)){ out.push("<hr>"); i++; continue; }
+
+    /* heading */
+    m = line.match(/^\s{0,3}(#{1,6})\s+(.*?)\s*#*\s*$/);
+    if(m){ var lv = m[1].length; out.push("<h"+lv+">"+inline(m[2])+"</h"+lv+">"); i++; continue; }
+
+    /* table */
+    if(line.indexOf("|") !== -1 && i+1 < lines.length &&
+       /^\s*\|?[\s:|-]*-[\s:|-]*\|?\s*$/.test(lines[i+1]) && lines[i+1].indexOf("-") !== -1){
+      var splitRow = function(r){
+        return r.trim().replace(/^\|/,"").replace(/\|$/,"").split("|").map(function(c){ return c.trim(); });
+      };
+      var head = splitRow(line);
+      var align = splitRow(lines[i+1]).map(function(c){
+        if(/^:.*:$/.test(c)) return "center";
+        if(/:$/.test(c))     return "right";
+        if(/^:/.test(c))     return "left";
+        return "";
+      });
+      var t = "<table><thead><tr>";
+      head.forEach(function(c,k){
+        t += "<th"+(align[k]?' style="text-align:'+align[k]+'"':"")+">"+inline(c)+"</th>";
+      });
+      t += "</tr></thead><tbody>";
+      i += 2;
+      while(i < lines.length && lines[i].indexOf("|") !== -1 && lines[i].trim()){
+        var cells = splitRow(lines[i]);
+        t += "<tr>";
+        for(var k=0;k<head.length;k++){
+          t += "<td"+(align[k]?' style="text-align:'+align[k]+'"':"")+">"+inline(cells[k]||"")+"</td>";
+        }
+        t += "</tr>"; i++;
+      }
+      out.push(t + "</tbody></table>");
+      continue;
+    }
+
+    /* blockquote */
+    if(/^\s{0,3}>/.test(line)){
+      var qb = [];
+      while(i < lines.length){
+        if(!/^\s{0,3}>/.test(lines[i])) break;
+        qb.push(lines[i].replace(/^\s{0,3}>\s?/, ""));
+        i++;
+      }
+      out.push("<blockquote>" + mdToHtml(qb.join("\n")) + "</blockquote>");
+      continue;
+    }
+
+    /* lists */
+    if(RE_UL.test(line) || RE_OL.test(line)){
+      var items = [];
+      while(i < lines.length){
+        var mm = lines[i].match(RE_UL), ordered = false;
+        if(!mm){ mm = lines[i].match(RE_OL); ordered = !!mm; }
+        if(!mm){
+          if(lines[i].trim() && items.length && !isBlockStart(lines[i])){
+            items[items.length-1].text += " " + lines[i].trim(); i++; continue;
+          }
+          break;
+        }
+        var indent = mm[1].replace(/\t/g,"    ").length;
+        var text = mm[3], task = null, tm = text.match(RE_TASK);
+        if(tm){ task = tm[1].toLowerCase() === "x"; text = tm[2]; }
+        items.push({ indent:indent, ordered:ordered, text:text, task:task });
+        i++;
+      }
+      out.push(renderList(items, 0, items[0].indent)[0]);
+      continue;
+    }
+
+    /* paragraph */
+    var para = [];
+    while(i < lines.length && lines[i].trim() && !isBlockStart(lines[i])){ para.push(lines[i]); i++; }
+    if(para.length){
+      var body = para.map(function(p){ return p.replace(/\s+$/, ""); }).join("\n");
+      out.push("<p>" + inline(body).replace(/\n/g, "<br>") + "</p>");
+    } else { i++; }
+  }
+
+  return out.join("\n");
+}
+
+/* ==========================================================================
+   2 · Wiring
+   ========================================================================== */
+
+var editor    = document.getElementById("editor");
+var preview   = document.getElementById("preview");
+var counts    = document.getElementById("counts");
+var saveState = document.getElementById("saveState");
+var doctitle  = document.getElementById("doctitle");
+
+var STORE_DOC   = "aereluna.doc.v1";
+var STORE_RATIO = "aereluna.ratio.v1";
+var STORE_THEME = "aereluna.theme.v1";
+
+var fileName   = "Untitled.md";
+var dirty      = false;
+var fileHandle = null;
+
+function store(k,v){
+  try{
+    if(v === undefined) return localStorage.getItem(k);
+    localStorage.setItem(k, v);
+  }catch(e){ return null; }
+}
+
+function render(){
+  var src = editor.value;
+  preview.innerHTML = mdToHtml(src);
+  var words = (src.match(/[\u4e00-\u9fff]|[A-Za-z0-9_'’-]+/g) || []).length;
+  counts.textContent = words + (words === 1 ? " word · " : " words · ")
+                     + src.split("\n").length + " lines";
+  refreshButtons();
+}
+
+function setTitle(){
+  doctitle.textContent = fileName + (dirty ? " — edited" : "");
+  document.title = "Aereluna Note — " + fileName;
+}
+
+function markDirty(){
+  dirty = true;
+  saveState.textContent = "Unsaved changes";
+  store(STORE_DOC, editor.value);
+}
+
+/* ==========================================================================
+   3 · Undo / redo
+   The browser's native textarea undo stack is discarded the moment we
+   rewrite .value ourselves, so we keep our own coalescing history.
+   ========================================================================== */
+
+var HIST_MAX = 300;
+/* Do not name this `history`: window.history is a getter-only property of the
+   Window object, so a top-level `var history = []` in strict mode throws a
+   TypeError and takes the entire script down with it. */
+var histStack = [];
+var hIndex  = -1;
+var hTimer  = null;
+var applyingHistory = false;
+
+function snap(){ return { v: editor.value, s: editor.selectionStart, e: editor.selectionEnd }; }
+
+function commitHistory(){
+  clearTimeout(hTimer); hTimer = null;
+  var cur = snap();
+  if(hIndex >= 0 && histStack[hIndex].v === cur.v){
+    histStack[hIndex].s = cur.s; histStack[hIndex].e = cur.e;   // selection only
+    return;
+  }
+  histStack = histStack.slice(0, hIndex + 1);
+  histStack.push(cur);
+  if(histStack.length > HIST_MAX){ histStack.shift(); }
+  hIndex = histStack.length - 1;
+  refreshHistoryButtons();
+}
+
+/* Typing commits lazily so a burst of keystrokes collapses into one step. */
+function scheduleCommit(immediate){
+  clearTimeout(hTimer);
+  if(immediate){ commitHistory(); return; }
+  hTimer = setTimeout(commitHistory, 420);
+}
+
+function restore(state){
+  applyingHistory = true;
+  editor.value = state.v;
+  editor.setSelectionRange(state.s, state.e);
+  applyingHistory = false;
+  markDirty(); setTitle(); render();
+  editor.focus();
+}
+
+function undo(){
+  commitHistory();               // fold in anything still pending
+  if(hIndex <= 0) return;
+  hIndex--;
+  restore(histStack[hIndex]);
+  saveState.textContent = "Undo";
+  refreshHistoryButtons();
+}
+
+function redo(){
+  if(hIndex >= histStack.length - 1) return;
+  hIndex++;
+  restore(histStack[hIndex]);
+  saveState.textContent = "Redo";
+  refreshHistoryButtons();
+}
+
+function refreshHistoryButtons(){
+  document.getElementById("btnUndo").disabled = hIndex <= 0;
+  document.getElementById("btnRedo").disabled = hIndex >= histStack.length - 1;
+}
+
+document.getElementById("btnUndo").addEventListener("click", function(){ undo(); });
+document.getElementById("btnRedo").addEventListener("click", function(){ redo(); });
+
+/* ==========================================================================
+   4 · Input, scroll sync
+   ========================================================================== */
+
+var renderTimer = null;
+editor.addEventListener("input", function(e){
+  if(applyingHistory) return;
+  markDirty(); setTitle();
+  /* newline / paste / delete-chunk are natural step boundaries */
+  var hard = e.inputType === "insertLineBreak" || e.inputType === "insertParagraph" ||
+             e.inputType === "insertFromPaste" || e.inputType === "deleteByCut";
+  scheduleCommit(hard);
+  clearTimeout(renderTimer);
+  renderTimer = setTimeout(render, 90);
+});
+editor.addEventListener("click", refreshButtons);
+editor.addEventListener("keyup", refreshButtons);
+editor.addEventListener("blur", function(){ scheduleCommit(true); });
+
+var syncing = false;
+editor.addEventListener("scroll", function(){
+  if(syncing) return; syncing = true;
+  var max = editor.scrollHeight - editor.clientHeight;
+  var r   = max > 0 ? editor.scrollTop / max : 0;
+  preview.scrollTop = r * (preview.scrollHeight - preview.clientHeight);
+  requestAnimationFrame(function(){ syncing = false; });
+});
+
+/* ==========================================================================
+   5 · The three formatting actions — and only three
+   ========================================================================== */
+
+var FORMATS = {
+  bold:      { open:"**",  close:"**"   },
+  italic:    { open:"*",   close:"*"    },
+  underline: { open:"<u>", close:"</u>" }
+};
+
+function applyFormat(kind){
+  var f = FORMATS[kind];
+  if(!f) return;
+  commitHistory();                       // the pre-format state becomes a step
+
+  var v = editor.value, s = editor.selectionStart, e = editor.selectionEnd;
+
+  if(s === e){                           // nothing selected → take the word
+    var a = s, b = s;
+    while(a > 0 && /[^\s*_<>\n]/.test(v[a-1])) a--;
+    while(b < v.length && /[^\s*_<>\n]/.test(v[b])) b++;
+    if(b > a){ s = a; e = b; }
+  }
+
+  var sel = v.slice(s,e), before = v.slice(0,s), after = v.slice(e);
+  var out, ns, ne;
+
+  if(sel.indexOf(f.open) === 0 && sel.length >= f.open.length + f.close.length &&
+     sel.slice(-f.close.length) === f.close){
+    var inner = sel.slice(f.open.length, sel.length - f.close.length);
+    out = before + inner + after; ns = s; ne = s + inner.length;
+  } else if(before.slice(-f.open.length) === f.open && after.slice(0,f.close.length) === f.close){
+    out = before.slice(0, before.length - f.open.length) + sel + after.slice(f.close.length);
+    ns = s - f.open.length; ne = ns + sel.length;
+  } else {
+    out = before + f.open + sel + f.close + after;
+    ns = s + f.open.length; ne = ns + sel.length;
+  }
+
+  editor.value = out;
+  editor.setSelectionRange(ns, ne);
+  editor.focus();
+  markDirty(); setTitle(); render();
+  commitHistory();                       // …and so does the result
+}
+
+function isActive(kind){
+  var f = FORMATS[kind], v = editor.value, s = editor.selectionStart, e = editor.selectionEnd;
+  var sel = v.slice(s,e);
+  if(sel.indexOf(f.open) === 0 && sel.slice(-f.close.length) === f.close &&
+     sel.length >= f.open.length + f.close.length) return true;
+  if(v.slice(Math.max(0, s - f.open.length), s) === f.open &&
+     v.slice(e, e + f.close.length) === f.close) return true;
+  var lineStart = v.lastIndexOf("\n", s-1) + 1;
+  var lineEnd   = v.indexOf("\n", e); if(lineEnd < 0) lineEnd = v.length;
+  var l = v.slice(lineStart, s), r = v.slice(e, lineEnd);
+  var io = l.lastIndexOf(f.open), ic = l.lastIndexOf(f.close);
+  return io > -1 && io >= ic && r.indexOf(f.close) > -1;
+}
+
+var BTN = { bold:"btnBold", italic:"btnItalic", underline:"btnUnderline" };
+
+function refreshButtons(){
+  for(var k in BTN) document.getElementById(BTN[k]).classList.toggle("on", isActive(k));
+  refreshHistoryButtons();
+}
+Object.keys(BTN).forEach(function(kind){
+  document.getElementById(BTN[kind]).addEventListener("click", function(ev){
+    ev.preventDefault(); applyFormat(kind);
+  });
+});
+
+/* ==========================================================================
+   6 · Files & PDF
+   ========================================================================== */
+
+function openFile(){
+  var inp = document.createElement("input");
+  inp.type = "file";
+  inp.accept = ".md,.markdown,.txt,text/markdown,text/plain";
+  inp.addEventListener("change", function(){
+    var f = inp.files && inp.files[0]; if(!f) return;
+    var fr = new FileReader();
+    fr.onload = function(){
+      editor.value = String(fr.result);
+      fileName = f.name; fileHandle = null;
+      dirty = false; saveState.textContent = "Opened";
+      store(STORE_DOC, editor.value);
+      histStack = []; hIndex = -1; commitHistory();
+      setTitle(); render(); editor.focus();
+    };
+    fr.readAsText(f, "utf-8");
+  });
+  inp.click();
+}
+
+async function saveFile(){
+  var text = editor.value;
+  if(window.showSaveFilePicker){
+    try{
+      if(!fileHandle){
+        fileHandle = await window.showSaveFilePicker({
+          suggestedName: fileName.replace(/\.(md|markdown|txt)$/i,"") + ".md",
+          types:[{ description:"Markdown", accept:{"text/markdown":[".md"]} }]
+        });
+      }
+      var w = await fileHandle.createWritable();
+      await w.write(text); await w.close();
+      fileName = fileHandle.name;
+      dirty = false;
+      saveState.textContent = "Saved " + new Date().toLocaleTimeString();
+      setTitle(); return;
+    }catch(err){
+      if(err && err.name === "AbortError") return;
+      fileHandle = null;
+    }
+  }
+  var blob = new Blob([text], {type:"text/markdown;charset=utf-8"});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement("a");
+  a.href = url;
+  a.download = fileName.replace(/\.(md|markdown|txt)$/i,"") + ".md";
+  a.click();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  dirty = false; saveState.textContent = "Downloaded";
+  setTitle();
+}
+
+function exportPdf(){
+  window.__preparePrint();
+  window.print();
+}
+window.addEventListener("beforeprint", function(){ window.__preparePrint(); });
+
+document.getElementById("btnOpen").addEventListener("click", function(){ openFile(); });
+document.getElementById("btnSave").addEventListener("click", function(){ saveFile(); });
+document.getElementById("btnPdf").addEventListener("click",  function(){ exportPdf(); });
+
+/* ==========================================================================
+   7 · Split — golden ratio by default
+   ========================================================================== */
+
+var GOLDEN = 0.618;
+var panes = document.getElementById("panes");
+var epane = document.getElementById("editorPane");
+
+function setRatio(p){
+  p = Math.min(0.88, Math.max(0.15, p));
+  epane.style.flex = "0 0 " + (p*100).toFixed(3) + "%";
+  store(STORE_RATIO, String(p));
+}
+
+var dragging = false;
+document.getElementById("splitter").addEventListener("mousedown", function(e){
+  dragging = true; e.preventDefault(); document.body.style.cursor = "col-resize";
+});
+window.addEventListener("mousemove", function(e){
+  if(!dragging) return;
+  var r = panes.getBoundingClientRect();
+  setRatio((e.clientX - r.left) / r.width);
+});
+window.addEventListener("mouseup", function(){
+  if(dragging){ dragging = false; document.body.style.cursor = ""; }
+});
+document.getElementById("splitter").addEventListener("dblclick", function(){ setRatio(GOLDEN); });
+
+/* ==========================================================================
+   8 · Theme
+   ========================================================================== */
+
+function setTheme(dark, remember){
+  document.body.classList.toggle("dark", !!dark);
+  document.getElementById("btnTheme").title = dark ? "Switch to light mode (⌘⇧D)"
+                                                   : "Switch to dark mode (⌘⇧D)";
+  if(remember !== false) store(STORE_THEME, dark ? "dark" : "light");
+}
+function toggleTheme(){ setTheme(!document.body.classList.contains("dark")); }
+document.getElementById("btnTheme").addEventListener("click", toggleTheme);
+
+/* ==========================================================================
+   9 · Keyboard
+   ========================================================================== */
+
+document.addEventListener("keydown", function(e){
+  if(!(e.metaKey || e.ctrlKey)) return;
+  var key = (e.key || "").toLowerCase();
+
+  if(key === "z"){                                   // override native undo
+    e.preventDefault();
+    if(e.shiftKey) redo(); else undo();
+  }
+  else if(key === "y"){ e.preventDefault(); redo(); }
+  else if(key === "b"){ e.preventDefault(); applyFormat("bold"); }
+  else if(key === "i"){ e.preventDefault(); applyFormat("italic"); }
+  else if(key === "u"){ e.preventDefault(); applyFormat("underline"); }
+  else if(key === "d" && e.shiftKey){ e.preventDefault(); toggleTheme(); }
+  else if(key === "s"){ e.preventDefault(); saveFile(); }
+  else if(key === "o"){ e.preventDefault(); openFile(); }
+  else if(key === "p"){ e.preventDefault(); exportPdf(); }
+  else if(key === "0"){ e.preventDefault(); setRatio(GOLDEN); }
+});
+
+editor.addEventListener("keydown", function(e){
+  if(e.key !== "Tab" || e.metaKey || e.ctrlKey || e.altKey) return;
+  e.preventDefault();
+  commitHistory();
+  var s = editor.selectionStart, en = editor.selectionEnd, v = editor.value;
+  editor.value = v.slice(0,s) + "    " + v.slice(en);
+  editor.selectionStart = editor.selectionEnd = s + 4;
+  markDirty(); setTitle(); render();
+  commitHistory();
+});
+
+/* ==========================================================================
+   10 · Bubbles
+   ========================================================================== */
+
+(function(){
+  var wrap = document.getElementById("bubbles");
+  for(var i=0;i<20;i++){
+    var b = document.createElement("div");
+    b.className = "bub";
+    var size = 12 + Math.random()*96;
+    b.style.width = b.style.height = size.toFixed(0) + "px";
+    b.style.left  = (Math.random()*100).toFixed(2) + "%";
+    b.style.bottom = "-150px";
+    b.style.animationDuration = (18 + Math.random()*26).toFixed(1) + "s";
+    b.style.animationDelay    = (-Math.random()*34).toFixed(1) + "s";
+    b.style.opacity = (0.22 + Math.random()*0.42).toFixed(2);
+    wrap.appendChild(b);
+  }
+})();
+
+/* ==========================================================================
+   11 · Desktop bridge — inert in a plain browser
+   ========================================================================== */
+
+var IS_APP = !!(window.aero && window.aero.isApp);
+var currentPath = null;
+
+window.__preparePrint = function(){
+  document.getElementById("printArea").innerHTML = mdToHtml(editor.value);
+  return true;
+};
+
+if(IS_APP){
+  document.body.classList.add("in-app");
+  if(window.aero.platform !== "darwin"){
+    document.getElementById("titlebar").style.paddingLeft = "13px";
+  }
+
+  var _setTitle = setTitle;
+  setTitle = function(){
+    _setTitle();
+    window.aero.pushState({ dirty: dirty, name: fileName, path: currentPath });
+  };
+
+  openFile  = function(){ window.aero.command("file:open"); };
+  saveFile  = function(){ window.aero.command("file:save"); };
+  exportPdf = function(){ window.aero.command("file:pdf"); };
+
+  window.aero.onCommand(function(name){
+    switch(name){
+      case "format:bold":      applyFormat("bold");      break;
+      case "format:italic":    applyFormat("italic");    break;
+      case "format:underline": applyFormat("underline"); break;
+      case "edit:undo":        undo();                   break;
+      case "edit:redo":        redo();                   break;
+      case "view:reset-split": setRatio(GOLDEN);         break;
+      case "view:toggle-theme":toggleTheme();            break;
+    }
+  });
+
+  window.aero.onDoc(function(d){
+    if(d.type === "load" || d.type === "new"){
+      editor.value = d.type === "new" ? "" : d.content;
+      fileName     = d.name || "Untitled.md";
+      currentPath  = d.path || null;
+      dirty        = false;
+      saveState.textContent = d.type === "new" ? "New document" : "Opened";
+      store(STORE_DOC, editor.value);
+      histStack = []; hIndex = -1; commitHistory();
+      setTitle(); render(); editor.focus();
+    } else if(d.type === "saved"){
+      fileName    = d.name;
+      currentPath = d.path;
+      dirty       = false;
+      saveState.textContent = "Saved " + new Date().toLocaleTimeString();
+      setTitle();
+    } else if(d.type === "status"){
+      saveState.textContent = d.message;
+    }
+  });
+}
+
+/* ==========================================================================
+   12 · Boot
+   ========================================================================== */
+
+var SAMPLE = [
+"# Aereluna Note",
+"",
+"A **fully offline** markdown notebook. Once this file is open it never makes a",
+"single network request — the parser, the styling and the fonts are all local.",
+"",
+"## Three formatting buttons",
+"",
+"The toolbar keeps three, deliberately. Nothing else:",
+"",
+"- **Bold** — ⌘B",
+"- *Italic* — ⌘I",
+"- <u>Underline</u> — ⌘U",
+"",
+"> Select text and press once to apply, press again to remove.",
+"> With nothing selected the word under the caret is wrapped instead.",
+"",
+"Undo and redo are ⌘Z and ⌘⇧Z, and they cover the toolbar edits too.",
+"",
+"## Everything else is ordinary markdown",
+"",
+"1. Ordered lists",
+"2. Nesting works",
+"    - second level",
+"    - second level",
+"3. Task lists:",
+"",
+"- [x] ship the parser",
+"- [ ] make tea",
+"",
+"| Action | Shortcut |",
+"| --- | :---: |",
+"| Open | ⌘O |",
+"| Save | ⌘S |",
+"| Export PDF | ⌘P |",
+"| Dark mode | ⌘⇧D |",
+"",
+"```js",
+"// fenced code blocks too",
+"const ratio = (1 + Math.sqrt(5)) / 2 - 1;  // 0.618…",
+"```",
+"",
+"---",
+"",
+"### Layout and PDF",
+"",
+"The split sits at the golden ratio, 61.8 : 38.2. Drag the divider to change it;",
+"double-click the divider to snap back.",
+"",
+"Press `⌘P` to export. In the browser, pick **PDF ▾ → Save as PDF** at the bottom",
+"left of the print sheet. Either way you get the full document, not the narrow",
+"preview column.",
+"",
+"Delete all of this and start writing."
+].join("\n");
+
+(function boot(){
+  /* Dark by default. Only an explicit past choice of "light" opts out, so a
+     first-time visitor lands in dark and anyone who switched stays switched. */
+  setTheme(store(STORE_THEME) !== "light", false);
+
+  var saved = store(STORE_DOC);
+  editor.value = (saved !== null && saved !== undefined && saved !== "") ? saved : SAMPLE;
+
+  var r = parseFloat(store(STORE_RATIO));
+  setRatio(isNaN(r) ? GOLDEN : r);
+
+  dirty = false;
+  saveState.textContent = saved ? "Restored" : "Ready";
+  histStack = []; hIndex = -1; commitHistory();
+  setTitle();
+  render();
+  editor.focus();
+})();
+
+window.addEventListener("beforeunload", function(e){
+  store(STORE_DOC, editor.value);
+  if(dirty && !IS_APP){ e.preventDefault(); e.returnValue = ""; }
+});
+</script>
+</body>
+</html>
