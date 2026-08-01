@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - name: Syntax check the Electron sources
+        run: |
+          node --check main.js
+          node --check preload.js
+      - name: Validate the packaging configuration
+        run: node scripts/check-package.js
+
+  package:
+    name: macOS package smoke test
+    # macOS runners cost 10x the minutes of Linux ones, so this only runs for
+    # release tags and manual triggers - not on every push.
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+    needs: check
+    runs-on: macos-latest
+    env:
+      # No Developer ID certificate in CI: build unsigned, which is fine for a
+      # smoke test of the electron-builder configuration.
+      CSC_IDENTITY_AUTO_DISCOVERY: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: npm ci
+      - name: Build the app bundle (unpacked)
+        run: npx electron-builder --mac --dir
+      - name: Confirm the bundle was produced
+        run: |
+          ls -la dist
+          test -d "dist/mac-arm64/Aereluna Note.app" || test -d "dist/mac/Aereluna Note.app"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aereluna-note-macos-unpacked
+          path: dist/mac*/**/*.app
+          if-no-files-found: warn
